@@ -2,6 +2,7 @@ package ru.tidinari.teabush.ui.utils
 
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,11 +33,12 @@ import ru.tidinari.teabush.data.model.User
 import java.util.Locale
 
 @Composable
-fun TeaCard(modifier: Modifier = Modifier, tea: Tea) {
+fun TeaCard(modifier: Modifier = Modifier, tea: Tea, onClick: () -> Unit) {
     Surface(
         modifier = modifier
             .padding(16.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable { onClick() },
     ) {
         Row(
             horizontalArrangement = Arrangement.Center,
@@ -138,5 +140,5 @@ fun TeaCardPreview() {
         arrayOf(Tag(1, "Травяной"), Tag(2, "Вкусный")),
         false,
         3.5f
-    ))
+    ), onClick = {})
 }

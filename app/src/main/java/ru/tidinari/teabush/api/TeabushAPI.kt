@@ -13,24 +13,36 @@ interface TeabushAPI {
         const val BASE_URL = "https://tidinari.ru/"
     }
 
-    @GET("/tea/{page}")
-    suspend fun getTeaList(@Path("page") page: Int): List<Tea>
+    @GET("/tea")
+    suspend fun getTeaList(): List<Tea>
 
-    @GET("/tea/search?page={page}&queue={query}")
-    suspend fun getTeaList(@Path("page") page: Int, @Path("query") query: String): List<Tea>
+//    @GET("/tea/{page}")
+//    suspend fun getTeaList(@Path("page") page: Int): List<Tea>
+//
+//    @GET("/tea/search?page={page}&queue={query}")
+//    suspend fun getTeaList(@Path("page") page: Int, @Path("query") query: String): List<Tea>
+//
+//    @GET("/tea/search?page={page}&tag={tag}")
+//    suspend fun getTeaList(@Path("page") page: Int, @Path("tag") tags: List<Int>): List<Tea>
+//
+//    @GET("/tea/search?page={page}&tag={tag}&queue={query}")
+//    suspend fun getTeaList(@Path("page") page: Int, @Path("tag") tags: List<Int>, @Path("query") query: String): List<Tea>
 
-    @GET("/tea/search?page={page}&tag={tag}")
-    suspend fun getTeaList(@Path("page") page: Int, @Path("tag") tags: List<Int>): List<Tea>
-
-    @GET("/tea/search?page={page}&tag={tag}&queue={query}")
-    suspend fun getTeaList(@Path("page") page: Int, @Path("tag") tags: List<Int>, @Path("query") query: String): List<Tea>
-
-    @GET("/tea/tags")
+    @GET("/tags")
     suspend fun getTags(): List<Tag>
 
     @POST("/register?login={login}&password={password}")
     suspend fun register(@Path("login") login: String, @Path("password") password: String): AuthResponse
 
+    @POST("/login?login={login}&password={password}")
+    suspend fun login(@Path("login") login: String, @Path("password") password: String): AuthResponse
+
     @GET("/favorite")
     suspend fun getFavoriteList(): List<Tea>
+
+    @GET("/favorite/set?id={id}&isFavorite={isFavorite}")
+    suspend fun setFavorite(@Path("id") id: Int, @Path("isFavorite") isFavorite: Boolean): List<Tea>
+
+    @POST("/tea/add?tea={tea}")
+    suspend fun addTea(@Path("tea") tea: Tea)
 }

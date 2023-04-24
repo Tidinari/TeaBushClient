@@ -6,11 +6,11 @@ import ru.tidinari.teabush.ui.navigation.graph.DETAIL_TEA
 
 sealed class Screen(val route: String) {
     object Overview: Screen(route = "overview")
-    object Detail: Screen(route = "detail?tea={$DETAIL_TEA}") {
+    object Detail: Screen(route = "detail?$DETAIL_TEA={$DETAIL_TEA}") {
         fun passTea(
             tea: Tea,
         ): String {
-            return "detail_screen?tea=${Gson().toJson(tea)}"
+            return "detail?$DETAIL_TEA=${Gson().toJson(tea)}"
         }
     }
     object Auth: Screen(route = "auth")

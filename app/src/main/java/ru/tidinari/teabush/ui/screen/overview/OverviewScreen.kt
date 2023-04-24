@@ -1,30 +1,28 @@
 package ru.tidinari.teabush.ui.screen.overview
 
-import android.graphics.fonts.FontStyle
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.foundation.gestures.FlingBehavior
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalMinimumTouchTargetEnforcement
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,51 +30,69 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import kotlinx.coroutines.delay
 import ru.tidinari.teabush.data.model.Tag
 import ru.tidinari.teabush.ui.navigation.Screen
 import ru.tidinari.teabush.ui.shared.OverviewTopBar
 import ru.tidinari.teabush.ui.utils.TeaCard
+import java.util.Locale
 
 @Composable
 fun OverviewScreen(
     navigationController: NavHostController,
     viewModel: OverviewViewModel
 ) {
-    var page by rememberSaveable { mutableStateOf(0) }
-    OverviewTopBar(
-        navigateToProfile = {
-            navigationController.navigate(Screen.Profile.route)
-        },
-        onValueChange = {
-            page = 0
-            // TODO: not implemented yet
-            // viewModel.getTeaList(page, it)
-        }
-    )
-    LazyRow(modifier = Modifier.animateContentSize()) {
-        items(items = viewModel.tags) { tag ->
-            TagCard(tag = tag, onSelected = { selected ->
-                viewModel.onTagClicked(tag, selected)
-            })
-        }
-    }
-    LazyColumn {
-        items(items = viewModel.teaList) { tea ->
-            TeaCard(tea = tea)
-        }
-        item {
-            PageSelector(onPageChanged = {}, upperBound = viewModel.upperBound)
-        }
-    }
+    var search by rememberSaveable { mutableStateOf("") }
 
-    LaunchedEffect(Unit) {
-        viewModel.getTags()
+    Column {
+        OverviewTopBar(
+            navigateToProfile = {
+                navigationController.navigate(Screen.Profile.route)
+            },
+            onValueChange = {
+                search = it
+            },
+            onClose = {
+                search = ""
+            }
+        )
+
+        Column(Modifier.weight(1f)) {
+            LazyRow(
+                modifier = Modifier
+                    .animateContentSize()
+            ) {
+                items(items = viewModel.tags) { tag ->
+                    TagCard(tag = tag, onSelected = { selected ->
+                        viewModel.onTagClicked(tag, selected)
+                    })
+                }
+            }
+            LazyColumn {
+                items(items = viewModel.teaList) { tea ->
+                    if (viewModel.selectedTags.all { tea.tags.contains(it) } && (tea.name.startsWith(
+                            search
+                        ) || tea.description.lowercase(
+                            Locale.ROOT
+                        ).contains(search.lowercase(Locale.ROOT)))) {
+                        TeaCard(tea = tea, onClick = {
+                            navigationController.navigate(Screen.Detail.passTea(tea))
+                        })
+                    }
+                }
+            }
+        }
+
+        // PageSelector(onPageChanged = {}, upperBound = 1, modifier = Modifier.fillMaxWidth())
+
+        LaunchedEffect(Unit) {
+            viewModel.getTags()
+            viewModel.getTeaList(1)
+        }
     }
 }
 
@@ -85,67 +101,62 @@ fun TagCard(modifier: Modifier = Modifier, tag: Tag, onSelected: (Boolean) -> Un
     val selected = remember {
         MutableTransitionState(false)
     }
-    Button(onClick = {
-        selected.targetState = !selected.currentState
-        onSelected(selected.targetState)
-    }) {
-        AnimatedVisibility(visibleState = selected) {
-            Icon(Icons.Filled.Check, contentDescription = null, Modifier.padding(end = 4.dp))
+
+    val containerColor by animateColorAsState(
+        targetValue =
+        if (selected.targetState)
+            MaterialTheme.colorScheme.primaryContainer
+        else
+            MaterialTheme.colorScheme.outlineVariant
+    )
+
+    val textColor by animateColorAsState(
+        targetValue =
+        if (selected.targetState)
+            MaterialTheme.colorScheme.onPrimaryContainer
+        else
+            Color.Black.copy(0.6f)
+    )
+
+
+    Surface(
+        color = containerColor,
+        modifier = Modifier
+            .clickable {
+                selected.targetState = !selected.targetState
+                onSelected(selected.targetState)
+            }
+            .animateContentSize()
+            .padding(4.dp)
+            .clip(MaterialTheme.shapes.medium)
+    ) {
+        Row {
+            AnimatedVisibility(visibleState = selected) {
+                Icon(Icons.Filled.Check, contentDescription = null, Modifier.padding(start = 4.dp, end = 2.dp).requiredSize(28.dp))
+            }
+            Text(text = tag.name, modifier = Modifier.padding(4.dp),
+            color = textColor)
         }
-        Text(text = tag.name)
     }
 }
 
 @Composable
 fun PageSelector(modifier: Modifier = Modifier, onPageChanged: (Int) -> Unit, upperBound: Int) {
     var selectedPage by remember { mutableStateOf(1) }
-    LazyRow(
-        horizontalArrangement = Arrangement.SpaceBetween
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        modifier = modifier
     ) {
-        items(
-            items = (maxOf(1, selectedPage - 2)..minOf(upperBound, maxOf(5, selectedPage + 2)))
-                .asIterable().toList()
-        ) { page ->
-            PageItem(
-                page = page,
-                selected = page == selectedPage,
-                onSelect = { selectedPage = it; onPageChanged(it) },
-                modifier = Modifier.padding(horizontal = 4.dp)
-            )
+        IconButton(onClick = { onPageChanged(selectedPage - 1); selectedPage -= 1 }, enabled = selectedPage > 1) {
+            Icon(Icons.Filled.KeyboardArrowLeft, contentDescription = null)
+        }
+        Surface(color = MaterialTheme.colorScheme.primaryContainer) {
+            Text(text = "$selectedPage", modifier = Modifier.padding(15.dp))
+        }
+        IconButton(onClick = { onPageChanged(selectedPage + 1); selectedPage += 1 }, enabled = selectedPage < upperBound) {
+            Icon(Icons.Filled.KeyboardArrowRight, contentDescription = null)
         }
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun PageItem(modifier: Modifier = Modifier, page: Int, selected: Boolean, onSelect: (Int) -> Unit) {
-    CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
-        if (selected) {
-            FilledTonalButton(
-                contentPadding = PaddingValues(0.dp),
-                shape = MaterialTheme.shapes.extraSmall,
-                onClick = { onSelect(page) },
-                modifier = modifier.size(36.dp)
-            ) {
-                Text(text = "$page", style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold))
-            }
-        } else {
-            OutlinedButton(
-                contentPadding = PaddingValues(0.dp),
-                shape = MaterialTheme.shapes.small,
-                onClick = { onSelect(page) },
-                modifier = modifier.size(36.dp)
-            ) {
-                Text(text = "$page", style = MaterialTheme.typography.bodyLarge)
-            }
-        }
-    }
-}
-
-@Preview
-@Composable
-fun OverviewPreview() {
-    OverviewScreen(rememberNavController(), OverviewViewModel())
 }
 
 @Preview

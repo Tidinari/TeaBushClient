@@ -1,9 +1,11 @@
 package ru.tidinari.teabush.ui.shared
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
@@ -11,11 +13,13 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TopAppBarDefaults.exitUntilCollapsedScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,6 +32,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ru.tidinari.teabush.data.model.Tea
 
 @Composable
 fun OverviewTopBar(
@@ -40,7 +45,8 @@ fun OverviewTopBar(
 @Composable
 fun OverviewTopBar(
     onValueChange: (String) -> Unit,
-    navigateToProfile: () -> Unit
+    navigateToProfile: () -> Unit,
+    onClose: () -> Unit
 ) {
     var isSearching by remember { mutableStateOf(false) }
     var search by remember { mutableStateOf("") }
@@ -50,7 +56,7 @@ fun OverviewTopBar(
     CenterAlignedTopAppBar(
         title = {
             if (isSearching) {
-                OutlinedTextField(
+                BasicTextField(
                     value = search,
                     onValueChange = { search = it; onValueChange(it) },
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
@@ -75,6 +81,8 @@ fun OverviewTopBar(
         actions = {
             IconButton(onClick = {
                 isSearching = !isSearching
+                if (!isSearching) onClose()
+                if (isSearching) onValueChange(search)
             }) {
                 Icon(if (isSearching) Icons.Filled.Close else Icons.Filled.Search, contentDescription = null)
             }
@@ -89,14 +97,6 @@ fun OverviewTopBar(
 
 @Preview
 @Composable
-fun TopWithBack() {
-    OverviewTopBar {
-        {}
-    }
-}
-
-@Preview
-@Composable
 fun TopWitoutBack() {
-    OverviewTopBar({}, {})
+    OverviewTopBar({}, {}, {})
 }
