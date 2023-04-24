@@ -4,6 +4,9 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -41,6 +44,7 @@ import ru.tidinari.teabush.ui.shared.OverviewTopBar
 import ru.tidinari.teabush.ui.utils.TeaCard
 import java.util.Locale
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OverviewScreen(
     navigationController: NavHostController,
@@ -72,7 +76,7 @@ fun OverviewScreen(
                     })
                 }
             }
-            LazyColumn {
+            LazyColumn(Modifier.animateContentSize()) {
                 items(items = viewModel.teaList) { tea ->
                     if (viewModel.selectedTags.all { tea.tags.contains(it) } && (tea.name.startsWith(
                             search
