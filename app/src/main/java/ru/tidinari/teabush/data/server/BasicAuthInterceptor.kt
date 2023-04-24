@@ -4,6 +4,7 @@ import okhttp3.Credentials
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
+import java.security.MessageDigest
 
 class BasicAuthInterceptor(user: String, password: String) : Interceptor {
 

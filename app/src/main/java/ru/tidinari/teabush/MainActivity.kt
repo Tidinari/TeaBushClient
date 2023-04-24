@@ -19,10 +19,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TeaBushCTheme {
-                setContent {
-                    val navController = rememberNavController()
-                    SetupNavGraph(navController = navController)
-                }
+                val navController = rememberNavController()
+                SetupNavGraph(navController = navController)
             }
         }
     }

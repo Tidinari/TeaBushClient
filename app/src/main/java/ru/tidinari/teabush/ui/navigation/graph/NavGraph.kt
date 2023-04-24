@@ -1,6 +1,7 @@
 package ru.tidinari.teabush.ui.navigation.graph
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -9,6 +10,7 @@ import ru.tidinari.teabush.data.model.Tea
 import ru.tidinari.teabush.ui.navigation.Screen
 import ru.tidinari.teabush.ui.screen.detail.DetailScreen
 import ru.tidinari.teabush.ui.screen.overview.OverviewScreen
+import ru.tidinari.teabush.ui.screen.overview.OverviewViewModel
 
 const val DETAIL_TEA = "tea"
 
@@ -16,11 +18,12 @@ const val DETAIL_TEA = "tea"
 fun SetupNavGraph(
     navController: NavHostController
 ) {
-    NavHost(navController = navController, startDestination = "launcher") {
+    NavHost(navController = navController, startDestination = Screen.Overview.route) {
         composable(
             route = Screen.Overview.route
         ) {
-            OverviewScreen(navigationController = navController)
+            val viewModel = viewModel<OverviewViewModel>()
+            OverviewScreen(navigationController = navController, viewModel = viewModel)
         }
         composable(
             route = Screen.Detail.route,

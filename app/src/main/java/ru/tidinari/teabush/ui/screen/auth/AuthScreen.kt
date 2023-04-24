@@ -35,19 +35,21 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.tidinari.teabush.ui.navigation.Screen
+import ru.tidinari.teabush.ui.shared.singletonViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AuthScreen(
-    navigationController: NavHostController
+    authViewModel: AuthViewModel = singletonViewModel(),
+    navigationController: NavHostController,
 ) {
     val context: Context = LocalContext.current
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
 
-    var login: String by remember { mutableStateOf("") }
-    var password: String by remember { mutableStateOf("") }
-    var isAlreadyRegistered: Boolean by remember { mutableStateOf(false) }
-    var isLoading: Boolean by remember { mutableStateOf(false) }
+    var login by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var isAlreadyRegistered by remember { mutableStateOf(false) }
+    var isLoading by remember { mutableStateOf(false) }
 
     val isLoginButtonEnabled: Boolean = login.isNotBlank() && password.isNotBlank() && !isLoading
 
@@ -109,5 +111,8 @@ fun AuthScreen(
 @Preview(showSystemUi = true)
 @Composable
 fun AuthPreview() {
-    AuthScreen(rememberNavController())
+    AuthScreen(
+        authViewModel = AuthViewModel(),
+        navigationController = rememberNavController()
+    )
 }
