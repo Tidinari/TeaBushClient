@@ -10,13 +10,30 @@ import ru.tidinari.teabush.data.model.Tag
 import ru.tidinari.teabush.data.model.Tea
 import ru.tidinari.teabush.data.model.User
 
+/**
+ * ViewModel обзор
+ */
 class OverviewViewModel: ViewModel() {
 
+    /**
+     * Обновляемый список тэгов
+     */
     val tags = mutableStateListOf<Tag>()
+
+    /**
+     * Обновляемый список чая
+     */
     val teaList = mutableStateListOf<Tea>()
 
+    /**
+     * Обновляемый селектор тэгов
+     */
     val selectedTags = mutableStateListOf<Tag>()
 
+    /**
+     * Получает список тэгов от сервера и обновляет переменную [tags]
+     * @see tags используется для каллбэка
+     */
     suspend fun getTags() {
         // TODO: Remove fake repo
         delay(1000)
@@ -27,6 +44,12 @@ class OverviewViewModel: ViewModel() {
 //        }
     }
 
+    /**
+     * Обновляет переменную [selectedTags]
+     *
+     * @param tag тэг, который нужно обновить
+     * @param select обновить или нет
+     */
     fun onTagClicked(tag: Tag, select: Boolean) {
         if (select)
             selectedTags.add(tag)
@@ -34,6 +57,12 @@ class OverviewViewModel: ViewModel() {
             selectedTags.remove(tag)
     }
 
+    /**
+     * Получает список чая от сервера и обновляет переменную [teaList]
+     * @see teaList используется для каллбэка
+     *
+     * @param page для указания страницы
+     */
     suspend fun getTeaList(page: Int) {
         // TODO: Remove fake repo
         delay(1000)

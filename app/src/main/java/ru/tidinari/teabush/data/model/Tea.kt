@@ -1,8 +1,19 @@
 package ru.tidinari.teabush.data.model
 
 
-//id, название, описание, рецепт, картинку, id автора. (для локальной БД)
-// isFavorite, averageRating
+/**
+ * Чай
+ *
+ * @property id идентификатор
+ * @property name название чая
+ * @property description описание чая
+ * @property recipe рецепт
+ * @property image картинка чая
+ * @property author автор
+ * @property tags тэги
+ * @property isFavorite избранное или нет
+ * @property averageRating средний рейтинг чая
+ */
 data class Tea(
     val id: Int,
     val name: String,

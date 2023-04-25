@@ -37,6 +37,12 @@ import kotlinx.coroutines.launch
 import ru.tidinari.teabush.ui.navigation.Screen
 import ru.tidinari.teabush.ui.shared.singletonViewModel
 
+/**
+ * Отрисовывает экран авторизации
+ *
+ * @param authViewModel ViewModel авторизации
+ * @param navigationController контроллер навигации для перехода обратно
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AuthScreen(

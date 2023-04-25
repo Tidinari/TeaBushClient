@@ -14,7 +14,18 @@ import androidx.navigation.compose.rememberNavController
 import ru.tidinari.teabush.ui.navigation.graph.SetupNavGraph
 import ru.tidinari.teabush.ui.theme.TeaBushCTheme
 
+/**
+ * Входная точка приложения, единственная Activity.
+ *
+ * @constructor Android'ом создаётся компонент приложения
+ */
 class MainActivity : ComponentActivity() {
+    /**
+     * При наступлении onCreate создаёт NavigationController,
+     * используя Jetpack Compose
+     *
+     * @param savedInstanceState сохранённое состояние приложения
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

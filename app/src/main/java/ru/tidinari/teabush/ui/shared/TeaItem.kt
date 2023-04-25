@@ -1,4 +1,4 @@
-package ru.tidinari.teabush.ui.utils
+package ru.tidinari.teabush.ui.shared
 
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
@@ -32,6 +32,14 @@ import ru.tidinari.teabush.data.model.Tea
 import ru.tidinari.teabush.data.model.User
 import java.util.Locale
 
+/**
+ * UI элемент, отображение чая
+ *
+ * @param modifier Jetpack Compose Modifier для модификации UI
+ * @param tea чай для отображения
+ * @param onClick что произойдёт при клике по элементу
+ * @receiver
+ */
 @Composable
 fun TeaCard(modifier: Modifier = Modifier, tea: Tea, onClick: () -> Unit) {
     Surface(
@@ -104,6 +112,11 @@ fun TeaCard(modifier: Modifier = Modifier, tea: Tea, onClick: () -> Unit) {
     }
 }
 
+/**
+ * Отображает списог тэгов
+ *
+ * @param tags список тэгов для отображения
+ */
 @Composable
 fun TagItems(tags: Array<Tag>) {
     val divider = "  •  "

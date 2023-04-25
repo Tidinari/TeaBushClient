@@ -4,8 +4,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -41,10 +39,15 @@ import androidx.navigation.NavHostController
 import ru.tidinari.teabush.data.model.Tag
 import ru.tidinari.teabush.ui.navigation.Screen
 import ru.tidinari.teabush.ui.shared.OverviewTopBar
-import ru.tidinari.teabush.ui.utils.TeaCard
+import ru.tidinari.teabush.ui.shared.TeaCard
 import java.util.Locale
 
-@OptIn(ExperimentalFoundationApi::class)
+/**
+ * Отрисовка экрана "Обзор"
+ *
+ * @param navigationController корневой контроллер навигации
+ * @param viewModel ViewModel для получения списка чая и тегов
+ */
 @Composable
 fun OverviewScreen(
     navigationController: NavHostController,
@@ -100,6 +103,14 @@ fun OverviewScreen(
     }
 }
 
+/**
+ * Отрисовка тэга
+ *
+ * @param modifier параметры отрисовки
+ * @param tag тэг
+ * @param onSelected выбран/не выбран
+ * @receiver каллбэк при выборе тэга
+ */
 @Composable
 fun TagCard(modifier: Modifier = Modifier, tag: Tag, onSelected: (Boolean) -> Unit) {
     val selected = remember {
@@ -144,6 +155,14 @@ fun TagCard(modifier: Modifier = Modifier, tag: Tag, onSelected: (Boolean) -> Un
     }
 }
 
+/**
+ * Выбор страницы
+ *
+ * @param modifier параметры отрисовки
+ * @param onPageChanged каллбэк, вызываемый при выборе странице
+ * @param upperBound максимальное количество страниц
+ * @receiver каллбэк для реагирования на выбор страницы
+ */
 @Composable
 fun PageSelector(modifier: Modifier = Modifier, onPageChanged: (Int) -> Unit, upperBound: Int) {
     var selectedPage by remember { mutableStateOf(1) }

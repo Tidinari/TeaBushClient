@@ -1,7 +1,12 @@
 package ru.tidinari.teabush.data.model
 
-// Теги: id тэга, само название тэга
+/**
+ * Тэг
+ *
+ * @property id идентификатор тэга
+ * @property name название тэга
+ */
 data class Tag(
-    val idTag: Int,
+    val id: Int,
     val name: String
 )

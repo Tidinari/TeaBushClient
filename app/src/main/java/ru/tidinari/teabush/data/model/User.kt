@@ -1,6 +1,10 @@
 package ru.tidinari.teabush.data.model
 
-// access token
+/**
+ * Пользователь
+ *
+ * @property name Имя пользователя
+ */
 data class User(
     val name: String,
 )

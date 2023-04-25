@@ -15,12 +15,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
+/**
+ * Тёмная цветовая схема
+ */
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
     secondary = PurpleGrey80,
     tertiary = Pink80
 )
 
+/**
+ * Светлая цветовая схема
+ */
 private val LightColorScheme = lightColorScheme(
     primary = Purple40,
     secondary = PurpleGrey40,
@@ -37,6 +43,14 @@ private val LightColorScheme = lightColorScheme(
     */
 )
 
+/**
+ * Тема TeaBush
+ *
+ * @param darkTheme тёмная цветовая гамма
+ * @param dynamicColor динамическая цветовая гамма для Android 12+
+ * @param content то, на что применяется цветовая гамма
+ * @receiver setContent - является корневым элементом для других функций
+ */
 @Composable
 fun TeaBushCTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

@@ -1,29 +1,15 @@
 package ru.tidinari.teabush.ui.screen.detail
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ContentTransform
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.animation.with
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledIconToggleButton
 import androidx.compose.material3.Icon
@@ -40,7 +26,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -53,8 +38,14 @@ import ru.tidinari.teabush.data.model.Tag
 import ru.tidinari.teabush.data.model.Tea
 import ru.tidinari.teabush.data.model.User
 import ru.tidinari.teabush.ui.navigation.Screen
-import ru.tidinari.teabush.ui.shared.singletonViewModel
 
+/**
+ * Отрисовка экрана с деталями конкретного чая
+ *
+ * @param navigationController навигация для перехода обратно
+ * @param tea чай, детали которого будут отображены
+ * @param detailViewModel ViewModel для добавления в избранное, оценивания чая
+ */
 @Composable
 fun DetailScreen(
     navigationController: NavHostController,
@@ -75,6 +66,11 @@ fun DetailScreen(
     }
 }
 
+/**
+ * Отрисовка секундомера
+ *
+ * @param modifier параметры отрисовки
+ */
 @Composable
 fun Stopwatch(modifier: Modifier) {
     var isStopwatchEnabled by remember { mutableStateOf(false) }

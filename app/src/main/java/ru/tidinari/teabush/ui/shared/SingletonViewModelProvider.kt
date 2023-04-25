@@ -11,8 +11,8 @@ import ru.tidinari.teabush.TeabushApp
 import ru.tidinari.teabush.api.TeabushAPI
 
 /**
- * Returns an existing [ViewModel] or creates a new one in the activity,
- * provided by [LocalActivity].
+ * Возвращает существующию [ViewModel] или создаёт новую для активности,
+ * [LocalActivity].
  *
  * The created [ViewModel] is associated with the current activity and will be retained
  * as long as the owner is alive (e.g. if it is an activity, until it is

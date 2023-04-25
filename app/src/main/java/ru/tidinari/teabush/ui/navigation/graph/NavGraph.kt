@@ -12,8 +12,17 @@ import ru.tidinari.teabush.ui.screen.detail.DetailScreen
 import ru.tidinari.teabush.ui.screen.overview.OverviewScreen
 import ru.tidinari.teabush.ui.screen.overview.OverviewViewModel
 
+/**
+ * Константа, используемая для перехода к Detail view
+ * и переноса информации о чае
+ */
 const val DETAIL_TEA = "tea"
 
+/**
+ * Граф навигации
+ *
+ * @param navController корневой контроллер, созданный в Activity
+ */
 @Composable
 fun SetupNavGraph(
     navController: NavHostController
