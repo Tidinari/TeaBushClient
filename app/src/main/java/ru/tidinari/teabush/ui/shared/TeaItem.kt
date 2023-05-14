@@ -95,7 +95,7 @@ fun TeaCard(modifier: Modifier = Modifier, tea: Tea, onClick: () -> Unit) {
                         style = MaterialTheme.typography.bodySmall
                     )
                 }
-                TagItems(tea.tags)
+                TagItems(tags = tea.tags)
             }
             Row(
                 horizontalArrangement = Arrangement.End,
@@ -118,7 +118,7 @@ fun TeaCard(modifier: Modifier = Modifier, tea: Tea, onClick: () -> Unit) {
  * @param tags список тэгов для отображения
  */
 @Composable
-fun TagItems(tags: Array<Tag>) {
+fun TagItems(modifier: Modifier = Modifier, tags: Array<Tag>) {
     val divider = "  •  "
     val text = buildAnnotatedString {
         val tagStyle = MaterialTheme.typography.bodySmall.toSpanStyle().copy(
@@ -136,7 +136,7 @@ fun TagItems(tags: Array<Tag>) {
     Text(
         text = text,
         style = MaterialTheme.typography.bodySmall,
-        modifier = Modifier.padding(top = 4.dp)
+        modifier = modifier.padding(top = 4.dp)
     )
 }
 
